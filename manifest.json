@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "so.yonder.bar",
+  "name": "Yonder",
+  "version": "1.0.0",
+  "author": "Vlad Artym",
+  "license": "MIT",
+  "description": "Yonder in the Omarchy bar: the Claude Code agents that run, wait on you or have new results, lit during a call. A click starts or ends a voice call with your agents. Needs the Yonder app: yonder.so.",
+  "kinds": ["bar-widget"],
+  "entryPoints": { "barWidget": "BarWidget.qml" },
+  "barWidget": {
+    "displayName": "Yonder",
+    "description": "Your agents at a glance. Left click: call. Right click: open Yonder. Middle click: pair a phone.",
+    "category": "AI",
+    "allowMultiple": false,
+    "defaultSection": "right"
+  }
+}
