@@ -71,7 +71,7 @@ Item {
   Text {
     id: glyph
     anchors.centerIn: parent
-    text: root.label
+    text: root.vertical ? root.icon : root.label
     textFormat: Text.PlainText
     color: root.live ? "#e5484d" : (root.bar && root.bar.foreground ? root.bar.foreground : "white")
     font.family: root.bar && root.bar.fontFamily ? root.bar.fontFamily : "monospace"
