@@ -78,16 +78,32 @@ Item {
     font.pixelSize: 12
   }
 
+  // The bar shows the tooltip only while its target says that it is hovered.
+  readonly property bool tooltipHovered: pointer.containsMouse
+  onTooltipHoveredChanged: if (bar) tooltipHovered ? bar.showTooltip(root, tip) : bar.hideTooltip(root)
+
+  // The bar takes the left click on a module and calls this, as for its own buttons. The right and the middle click
+  // come through the MouseArea. The registration gives the hand pointer of the bar.
+  property var registeredBar: null
+  onBarChanged: {
+    if (registeredBar) registeredBar.unregisterClickTarget(root)
+    registeredBar = bar
+    if (bar) bar.registerClickTarget(root)
+  }
+  Component.onDestruction: if (registeredBar) registeredBar.unregisterClickTarget(root)
+  function triggerPress(button) {
+    if (bar) bar.hideTooltip(root)
+    if (button === Qt.RightButton) run(["open"])
+    else if (button === Qt.MiddleButton) Quickshell.execDetached(["/usr/bin/xdg-terminal-exec", yonder, "pair", "--hold"])
+    else run(["call"])
+  }
+
   MouseArea {
+    id: pointer
     anchors.fill: parent
     hoverEnabled: true
+    cursorShape: Qt.PointingHandCursor
     acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
-    onEntered: if (root.bar) root.bar.showTooltip(root, root.tip)
-    onExited: if (root.bar) root.bar.hideTooltip(root)
-    onClicked: function (mouse) {
-      if (mouse.button === Qt.RightButton) root.run(["open"])
-      else if (mouse.button === Qt.MiddleButton) Quickshell.execDetached(["/usr/bin/xdg-terminal-exec", root.yonder, "pair", "--hold"])
-      else root.run(["call"])
-    }
+    onClicked: function (mouse) { root.triggerPress(mouse.button) }
   }
 }
