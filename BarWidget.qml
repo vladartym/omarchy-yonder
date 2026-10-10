@@ -47,8 +47,10 @@ Item {
     Quickshell.execDetached([root.yonder].concat(args))
   }
 
-  implicitWidth: glyph.implicitWidth + 8
-  implicitHeight: root.barSize
+  readonly property bool vertical: bar ? bar.vertical === true : false
+
+  implicitWidth: vertical ? root.barSize : glyph.implicitWidth + 8
+  implicitHeight: vertical ? glyph.implicitHeight + 8 : root.barSize
 
   Process {
     id: status
